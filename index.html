@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Tokyo — Oct 2026 · v1.7</title>
+<title>Tokyo — Oct 2026 · v1.9</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -190,6 +190,7 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
 <div class="nav">
   <button class="nav-btn on" onclick="swTab('itinerary',this)">Itinerary</button>
   <button class="nav-btn" onclick="swTab('places',this)">Places</button>
+  <button class="nav-btn" onclick="swTab('yen',this)">Yen</button>
   <button class="nav-btn" onclick="swTab('packing',this)">Packing</button>
   <button class="nav-btn" onclick="swTab('stay',this)">Stay</button>
 </div>
@@ -206,6 +207,10 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
     <p>Pin spots you want to visit. Tap to open in Maps.</p>
     <a href="https://sugoii-japan.com/street-food-spots-in-tokyo" target="_blank" style="display:inline-block;margin-top:8px;font-size:12px;color:var(--red);text-decoration:underline">Street food guide source ↗</a>
   </div>
+  <button onclick="togglePlacesMap()" style="display:inline-flex;align-items:center;gap:6px;margin:2px 0 12px;padding:8px 14px;border-radius:100px;border:1px solid var(--paper3);background:none;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--ink2);cursor:pointer">🗺️ View on map</button>
+  <div id="places-map-wrap" style="display:none;margin-bottom:16px;border-radius:12px;overflow:hidden;border:1px solid var(--paper3)">
+    <div id="places-map" style="width:100%;height:320px;background:var(--paper2)"></div>
+  </div>
   <div id="places-list"></div>
   <button onclick="toggleAddPlace()" style="display:flex;align-items:center;gap:8px;margin:8px 0 0;padding:12px 0;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink3)">
     <span style="font-size:18px">＋</span> Pin a new place
@@ -219,6 +224,51 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
       <button class="add-cancel" onclick="toggleAddPlace()">Cancel</button>
     </div>
   </div>
+</div>
+
+<!-- YEN TAB -->
+<div class="section" id="tab-yen">
+  <div class="section-header">
+    <h2>Yen Sense</h2>
+    <p>Live conversion, typical prices, and a running log of what you've spent.</p>
+  </div>
+
+  <div style="background:var(--paper2);border-radius:12px;padding:16px;margin:16px 0">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)" id="fx-rate-label">Loading rate…</div>
+      <button onclick="refreshRate()" style="background:none;border:none;color:var(--blue);font-size:11px;cursor:pointer;letter-spacing:.04em;text-transform:uppercase">Refresh</button>
+    </div>
+    <div style="display:flex;align-items:flex-end;gap:10px;margin-bottom:12px">
+      <div style="flex:1">
+        <div style="font-size:10px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Yen</div>
+        <input id="fx-jpy" type="number" inputmode="decimal" placeholder="0" style="width:100%;border:1px solid var(--paper3);border-radius:8px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:18px;color:var(--ink);background:var(--paper);outline:none" oninput="fxFromJPY(this.value)">
+      </div>
+      <div style="font-size:16px;color:var(--ink3);padding-bottom:10px">=</div>
+      <div style="flex:1">
+        <div style="font-size:10px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Dollars</div>
+        <input id="fx-usd" type="number" inputmode="decimal" placeholder="0" style="width:100%;border:1px solid var(--paper3);border-radius:8px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:18px;color:var(--ink);background:var(--paper);outline:none" oninput="fxFromUSD(this.value)">
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px" id="fx-presets"></div>
+  </div>
+
+  <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px">Typical prices</div>
+  <div id="fx-reference" style="margin-bottom:24px"></div>
+
+  <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Trip spending log</div>
+  <div style="display:flex;gap:8px">
+    <input id="spend-amt" type="number" inputmode="decimal" placeholder="¥ amount" class="add-input" style="margin-bottom:0">
+    <input id="spend-label" type="text" placeholder="What for" class="add-input" style="margin-bottom:0">
+  </div>
+  <button onclick="addSpend()" class="log-btn" style="width:100%;justify-content:center;margin:8px 0 14px">Log it</button>
+  <div style="display:flex;justify-content:space-between;align-items:baseline;background:var(--paper2);border-radius:8px;padding:12px;margin-bottom:12px">
+    <div style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em">Total logged</div>
+    <div style="text-align:right">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--ink)" id="spend-total-jpy">¥0</div>
+      <div style="font-size:11px;color:var(--ink3)" id="spend-total-usd">$0.00</div>
+    </div>
+  </div>
+  <div id="spend-list"></div>
 </div>
 
 <!-- STAY TAB -->
@@ -565,8 +615,16 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
   <div id="stay-notes-saved" style="margin-top:8px"></div>
 </div>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="if(event.target===this) closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
 <script>
 var LS={get:function(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+function today(){return new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
 
 // DATA
 var DAYS=[
@@ -648,8 +706,10 @@ var dayState=(function(){
 
 function save(){
   LS.set('tk_days',dayState);
-  LS.set('tk_pack',packState);
   LS.set('tk_places',PLACES_CUSTOM);
+  // Packing state saves itself separately via tapPack() (keys pk_jess/pk_jack) —
+  // there used to be a reference here to an undefined `packState` variable that
+  // threw every time this ran, silently breaking task-checklist and note saves.
 }
 
 // NAV
@@ -663,6 +723,7 @@ function swTab(id,btn){
   if(btn) btn.classList.add('on');
   if(id==='stay') renderStay();
   else if(id==='packing') initPacking();
+  else if(id==='yen') renderYen();
   else render();
 }
 
@@ -1036,19 +1097,36 @@ function toggleAddPlace(){
 function addPlace(){
   var name=document.getElementById('place-name').value.trim();
   if(!name)return;
-  PLACES_CUSTOM.push({
+  var entry={
     name:name,
     day:document.getElementById('place-day').value.trim(),
     note:document.getElementById('place-note').value.trim(),
     icon:'📍',
     maps:'https://maps.google.com/?q='+encodeURIComponent(name)+'+Tokyo+Japan'
-  });
+  };
+  PLACES_CUSTOM.push(entry);
   save();
   document.getElementById('place-name').value='';
   document.getElementById('place-day').value='';
   document.getElementById('place-note').value='';
   toggleAddPlace();
   renderPlaces();
+
+  // Best-effort geocode (OpenStreetMap Nominatim, no key needed) so this pin
+  // can also show up on the map — the place is already saved either way.
+  fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(name+', Tokyo, Japan'))
+    .then(function(r){return r.json();})
+    .then(function(res){
+      if(res && res[0]){
+        entry.lat=parseFloat(res[0].lat);
+        entry.lng=parseFloat(res[0].lon);
+        save();
+        if(placesMapInstance){
+          L.marker([entry.lat,entry.lng]).addTo(placesMapInstance).bindPopup('<strong>'+entry.name+'</strong>'+(entry.day?'<br>'+entry.day:''));
+        }
+      }
+    })
+    .catch(function(){});
 }
 
 // RENDER PACKING
@@ -1057,6 +1135,7 @@ function render(){
   if(activeTab==='itinerary')renderDays();
   else if(activeTab==='places')renderPlaces();
   else if(activeTab==='packing')initPacking();
+  else if(activeTab==='yen')renderYen();
 }
 
 
@@ -1064,7 +1143,41 @@ function render(){
 var photoData = LS.get('tk_photos', {});
 
 function savePhotos() {
-  LS.set('tk_photos', photoData);
+  try {
+    localStorage.setItem('tk_photos', JSON.stringify(photoData));
+  } catch(e) {
+    alert('Storage is full, so this photo could not be saved on this device. Delete a few older photos, or take fewer per day — everything else in the app still works fine.');
+  }
+}
+
+// Downscale + recompress before storing, since photos are kept as data URLs in
+// localStorage (a few MB total budget) — a handful of full-res phone photos
+// would blow through that fast.
+function compressImage(file, cb, maxDim, quality) {
+  maxDim = maxDim || 1280; quality = quality || 0.72;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var w = img.width, h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+        else { w = Math.round(w * maxDim / h); h = maxDim; }
+      }
+      try {
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        cb(canvas.toDataURL('image/jpeg', quality));
+      } catch(err) {
+        cb(e.target.result);
+      }
+    };
+    img.onerror = function() { cb(e.target.result); };
+    img.src = e.target.result;
+  };
+  reader.onerror = function() { };
+  reader.readAsDataURL(file);
 }
 
 function handlePhotoUpload(di, input) {
@@ -1074,10 +1187,9 @@ function handlePhotoUpload(di, input) {
   if (!photoData[key]) photoData[key] = [];
   var remaining = files.length;
   Array.from(files).forEach(function(file) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
+    compressImage(file, function(dataUrl) {
       photoData[key].push({
-        src: e.target.result,
+        src: dataUrl,
         caption: file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '),
         date: new Date().toLocaleDateString('en-US', {month:'short',day:'numeric'})
       });
@@ -1086,8 +1198,7 @@ function handlePhotoUpload(di, input) {
         savePhotos();
         renderDays();
       }
-    };
-    reader.readAsDataURL(file);
+    });
   });
   input.value = '';
 }
@@ -1112,8 +1223,136 @@ function deletePhoto(di, pi) {
 }
 
 
+// ── CURRENCY ──────────────────────────────────────────────────────────────
+var FX_FALLBACK = 150; // yen per dollar — static fallback if there's no cached or live rate
+var fxRate = LS.get('tk_fx_rate', null); // {rate, date}
+var fxPresets = [1000,3000,5000,10000,30000,100000];
+var FX_REFERENCE = [
+  {item:'Conbini meal (onigiri + drink)', jpy:600},
+  {item:'Bowl of ramen', jpy:1000},
+  {item:'Coffee at a cafe', jpy:500},
+  {item:'Suica subway ride', jpy:200},
+  {item:'Taxi flag drop', jpy:500},
+  {item:'Temple / shrine entry', jpy:500},
+  {item:'TeamLab Borderless ticket', jpy:3800},
+  {item:'Tokyo–Kyoto Shinkansen (one way)', jpy:14000},
+  {item:'Capsule toy (gachapon)', jpy:400}
+];
+
+function currentRate(){
+  return (fxRate && fxRate.rate) ? fxRate.rate : FX_FALLBACK;
+}
+
+function fetchRate(){
+  fetch('https://api.frankfurter.app/latest?from=USD&to=JPY')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d && d.rates && d.rates.JPY){
+        fxRate={rate:d.rates.JPY, date:new Date().toISOString()};
+        LS.set('tk_fx_rate', fxRate);
+        renderYen();
+      }
+    })
+    .catch(function(){});
+}
+
+function refreshRate(){
+  var lbl=document.getElementById('fx-rate-label');
+  if(lbl) lbl.textContent='Refreshing…';
+  fetchRate();
+}
+
+function fxFromJPY(v){
+  var jpy=parseFloat(v)||0;
+  document.getElementById('fx-usd').value = jpy ? (jpy/currentRate()).toFixed(2) : '';
+}
+function fxFromUSD(v){
+  var usd=parseFloat(v)||0;
+  document.getElementById('fx-jpy').value = usd ? Math.round(usd*currentRate()) : '';
+}
+function fxSetPreset(jpy){
+  document.getElementById('fx-jpy').value = jpy;
+  fxFromJPY(jpy);
+}
+
+var spendLog = LS.get('tk_spend', []);
+function addSpend(){
+  var amt = parseFloat(document.getElementById('spend-amt').value);
+  var label = document.getElementById('spend-label').value.trim();
+  if(!amt) return;
+  spendLog.push({jpy:amt, label:label||'Untitled', date:today()});
+  LS.set('tk_spend', spendLog);
+  document.getElementById('spend-amt').value='';
+  document.getElementById('spend-label').value='';
+  renderSpend();
+}
+function deleteSpend(i){
+  spendLog.splice(i,1);
+  LS.set('tk_spend', spendLog);
+  renderSpend();
+}
+function renderSpend(){
+  var totalJpy = spendLog.reduce(function(s,e){return s+e.jpy;},0);
+  var tj=document.getElementById('spend-total-jpy'); if(tj) tj.textContent='¥'+totalJpy.toLocaleString();
+  var tu=document.getElementById('spend-total-usd'); if(tu) tu.textContent='$'+(totalJpy/currentRate()).toFixed(2);
+  var list=document.getElementById('spend-list');
+  if(!list) return;
+  list.innerHTML='';
+  spendLog.forEach(function(e,i){
+    var row=document.createElement('div');
+    row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--paper3)';
+    var left=document.createElement('div');
+    var label=document.createElement('div');label.style.cssText='font-size:13px;color:var(--ink2)';label.textContent=e.label;
+    var date=document.createElement('div');date.style.cssText='font-size:11px;color:var(--ink3)';date.textContent=e.date;
+    left.appendChild(label);left.appendChild(date);
+    var right=document.createElement('div');right.style.cssText='display:flex;align-items:center;gap:10px';
+    var amt=document.createElement('div');amt.style.cssText='font-size:13px;font-weight:500;color:var(--ink);text-align:right';
+    amt.innerHTML='¥'+e.jpy.toLocaleString()+'<div style="font-size:10px;color:var(--ink3);font-weight:400">$'+(e.jpy/currentRate()).toFixed(2)+'</div>';
+    var del=document.createElement('button');del.textContent='✕';del.style.cssText='background:none;border:none;color:var(--ink3);font-size:14px;cursor:pointer;padding:4px';
+    del.onclick=(function(idx){return function(){deleteSpend(idx);};})(i);
+    right.appendChild(amt);right.appendChild(del);
+    row.appendChild(left);row.appendChild(right);
+    list.insertBefore(row, list.firstChild);
+  });
+}
+
+function renderYen(){
+  if(!fxRate) fetchRate();
+  var lbl=document.getElementById('fx-rate-label');
+  if(lbl){
+    if(fxRate && fxRate.rate){
+      var d=new Date(fxRate.date);
+      lbl.textContent='¥'+fxRate.rate.toFixed(2)+' / $1 · updated '+d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    } else {
+      lbl.textContent='¥'+FX_FALLBACK+' / $1 (offline estimate)';
+    }
+  }
+  var presets=document.getElementById('fx-presets');
+  if(presets && !presets.childElementCount){
+    fxPresets.forEach(function(p){
+      var btn=document.createElement('button');
+      btn.textContent='¥'+p.toLocaleString();
+      btn.style.cssText="padding:6px 12px;border-radius:100px;border:1px solid var(--paper3);background:none;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--ink2);cursor:pointer";
+      btn.onclick=function(){fxSetPreset(p);};
+      presets.appendChild(btn);
+    });
+  }
+  var ref=document.getElementById('fx-reference');
+  if(ref && !ref.childElementCount){
+    FX_REFERENCE.forEach(function(r){
+      var row=document.createElement('div');
+      row.style.cssText='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--paper3);font-size:13px';
+      var name=document.createElement('div');name.style.color='var(--ink2)';name.textContent=r.item;
+      var price=document.createElement('div');price.style.cssText='color:var(--ink3);white-space:nowrap;margin-left:12px';price.textContent='¥'+r.jpy.toLocaleString()+' ≈ $'+(r.jpy/currentRate()).toFixed(2);
+      row.appendChild(name);row.appendChild(price);
+      ref.appendChild(row);
+    });
+  }
+  renderSpend();
+}
+
 // DARK MODE
-var APP_VERSION = '1.7';
+var APP_VERSION = '1.9';
 var savedVersion = LS.get('tk_version', '0');
 // If version changed, could reset state here in future
 LS.set('tk_version', APP_VERSION);
@@ -1268,20 +1507,35 @@ function renderHotelTimes(){
   });
 }
 
+// Shared Leaflet loader — both the hotel map and the places map use it, but
+// the <script>/<link> tags should only ever be injected once.
+var leafletReady = false;
+var leafletCallbacks = [];
+function loadLeaflet(cb){
+  if(leafletReady){ cb(); return; }
+  leafletCallbacks.push(cb);
+  if(window._leafletLoading) return;
+  window._leafletLoading = true;
+  var link = document.createElement('link');
+  link.rel='stylesheet';link.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  document.head.appendChild(link);
+  var script = document.createElement('script');
+  script.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  script.onload = function(){
+    leafletReady = true;
+    leafletCallbacks.forEach(function(f){f();});
+    leafletCallbacks = [];
+  };
+  document.head.appendChild(script);
+}
+
 var mapInitialized = false;
 function initHotelMap(){
   var el = document.getElementById('hotel-map');
   if(!el || mapInitialized) return;
   mapInitialized = true;
 
-  // Use Leaflet from CDN for interactive map
-  var link = document.createElement('link');
-  link.rel='stylesheet';link.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-  document.head.appendChild(link);
-
-  var script = document.createElement('script');
-  script.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-  script.onload = function(){
+  loadLeaflet(function(){
     var map = L.map('hotel-map',{zoomControl:true,scrollWheelZoom:false}).setView([HOTEL.lat, HOTEL.lng], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
       attribution:'&copy; OpenStreetMap contributors',maxZoom:18
@@ -1313,8 +1567,48 @@ function initHotelMap(){
         .addTo(map)
         .bindPopup('<strong>'+d.name+'</strong><br><span style="color:'+col+';font-weight:600">'+d.day+'</span><br>'+d.time+' from hotel');
     });
-  };
-  document.head.appendChild(script);
+  });
+}
+
+// PLACES MAP — same tile layer, plots the hotel + every itinerary stop with
+// known coordinates, plus any custom-pinned place that was successfully
+// geocoded when it was added.
+var placesMapInitialized = false;
+var placesMapInstance = null;
+function togglePlacesMap(){
+  var wrap = document.getElementById('places-map-wrap');
+  if(!wrap) return;
+  var isOpen = wrap.style.display !== 'none';
+  wrap.style.display = isOpen ? 'none' : 'block';
+  if(!isOpen) initPlacesMap();
+}
+function initPlacesMap(){
+  if(placesMapInitialized) return;
+  placesMapInitialized = true;
+  loadLeaflet(function(){
+    var map = L.map('places-map',{zoomControl:true,scrollWheelZoom:false}).setView([HOTEL.lat, HOTEL.lng], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      attribution:'&copy; OpenStreetMap contributors',maxZoom:18
+    }).addTo(map);
+    var hotelIcon = L.divIcon({
+      html:'<div style="font-size:26px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))">&#x1F338;</div>',
+      iconSize:[30,30],iconAnchor:[15,26],popupAnchor:[0,-26],className:''
+    });
+    L.marker([HOTEL.lat,HOTEL.lng],{icon:hotelIcon}).addTo(map).bindPopup('<strong>Hotel Gracery Shinjuku</strong>');
+    DEST.forEach(function(d){
+      var icon = L.divIcon({
+        html:'<div style="font-size:16px;line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))">'+d.icon+'</div>',
+        iconSize:[22,22],iconAnchor:[11,18],popupAnchor:[0,-18],className:''
+      });
+      L.marker([d.lat,d.lng],{icon:icon}).addTo(map).bindPopup('<strong>'+d.name+'</strong><br>'+d.day);
+    });
+    PLACES_CUSTOM.forEach(function(p){
+      if(p.lat && p.lng){
+        L.marker([p.lat,p.lng]).addTo(map).bindPopup('<strong>'+p.name+'</strong>'+(p.day?'<br>'+p.day:''));
+      }
+    });
+    placesMapInstance = map;
+  });
 }
 
 function renderStay(){
