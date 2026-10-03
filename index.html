@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Tokyo — Oct 2026 · v1.9</title>
+<title>Tokyo — Oct 2026 · v2.5</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -189,18 +189,93 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
 <!-- NAV -->
 <div class="nav">
   <button class="nav-btn on" onclick="swTab('itinerary',this)">Itinerary</button>
+  <button class="nav-btn" onclick="swTab('transit',this)">Transit</button>
   <button class="nav-btn" onclick="swTab('places',this)">Places</button>
   <button class="nav-btn" onclick="swTab('yen',this)">Yen</button>
   <button class="nav-btn" onclick="swTab('packing',this)">Packing</button>
+  <button class="nav-btn" onclick="swTab('kit',this)">Kit</button>
   <button class="nav-btn" onclick="swTab('stay',this)">Stay</button>
 </div>
 
 <!-- ITINERARY TAB -->
 <div class="section on" id="tab-itinerary">
   <div id="days-container"></div>
+  <div style="margin:24px 0 8px;padding:16px;background:var(--paper2);border-radius:12px;border-left:3px solid var(--red)">
+    <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:8px">Back up the journal</div>
+    <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:12px">Notes, photos and checkmarks live only in this browser. Clearing site data, switching browsers or a long gap without opening the app can wipe them. Export every few days and paste it somewhere that syncs.</div>
+    <div style="display:flex;gap:8px">
+      <button onclick="exportJournal('copy')" class="log-btn" style="flex:1">Copy all notes</button>
+      <button onclick="exportJournal('download')" class="log-btn" style="flex:1">Download .txt</button>
+    </div>
+    <div id="journal-export-msg" style="font-size:12px;color:var(--ink3);margin-top:8px"></div>
+  </div>
 </div>
 
 <!-- PLACES TAB -->
+<div class="section" id="tab-transit">
+  <div style="padding:28px 0 8px">
+    <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-weight:400;color:var(--ink)">Transit</h2>
+    <p style="font-size:13px;color:var(--ink3);margin-top:4px">Lines, stops and leg times, day by day</p>
+  </div>
+
+  <div style="background:var(--paper2);border-radius:12px;padding:14px;margin-bottom:18px;border-left:3px solid var(--ink)">
+    <div style="font-size:13px;color:var(--ink2);line-height:1.6">Every day starts and ends at Shinjuku. Each is a loop: out to the far stop, across to the near one, then home — you do not come back to the hotel in between. Tap Suica in and out; the fare sorts itself.</div>
+  </div>
+
+  <div class="pack-section">
+    <div class="pack-section-title">Sun Oct 11 — Haneda to Shinjuku</div>
+    <div class="task"><div class="task-text"><b>Recommended</b> — Airport Limousine bus, T3 arrivals to Hyatt Regency Shinjuku. ~55 min, no transfers, no stairs, a few minutes' walk from Gracery</div></div>
+    <div class="task"><div class="task-text"><b>Rail alternative</b> — Keikyu Airport line, T3 to Shinagawa (~13 min) &rarr; JR Yamanote to Shinjuku (~20 min). Faster on paper, worse with suitcases</div></div>
+  </div>
+
+  <div class="pack-section">
+    <div class="pack-section-title">Mon Oct 12 — Yanaka + Akihabara</div>
+    <div class="task"><div class="task-text">Shinjuku &rarr; <b>Nippori</b> — JR Yamanote, <b>outer loop</b> via Ikebukuro, ~20 min. Wrong loop costs you 40 min the long way round. Yanaka Ginza is out the west exit</div></div>
+    <div class="task"><div class="task-text">Nippori &rarr; <b>Akihabara</b> — JR Yamanote, inner loop, ~8 min</div></div>
+    <div class="task"><div class="task-text">Akihabara &rarr; <b>Shinjuku</b> — JR Chuo-Sobu local, the yellow train, direct, ~17 min</div></div>
+  </div>
+
+  <div class="pack-section">
+    <div class="pack-section-title">Tue Oct 13 — Tsukiji + teamLab</div>
+    <div class="task"><div class="task-text">Shinjuku &rarr; <b>Tsukijishijo</b> — Toei Oedo line, direct, ~20 min</div></div>
+    <div class="task"><div class="task-text"><b>Two different stations.</b> You arrive at Tsukijishijo (Oedo) but leave from <b>Tsukiji</b> (Hibiya), a 5 min walk away</div></div>
+    <div class="task"><div class="task-text">Tsukiji &rarr; <b>Kamiyacho</b> — Hibiya line, ~10 min, then walk to Azabudai Hills. teamLab Borderless is here, not Odaiba</div></div>
+    <div class="task"><div class="task-text">Home — Hibiya from Kamiyacho to Roppongi, change to Toei Oedo to Shinjuku, ~20 min</div></div>
+    <div class="task"><div class="task-text"><b>Midday option</b> — Nakano Broadway is JR Chuo rapid, 5 min from Shinjuku</div></div>
+  </div>
+
+  <div class="pack-section">
+    <div class="pack-section-title">Wed Oct 14 — DisneySea</div>
+    <div class="task"><div class="task-text">Shinjuku &rarr; <b>Tokyo Station</b> — JR Chuo rapid, ~14 min</div></div>
+    <div class="task"><div class="task-text">Tokyo &rarr; <b>Maihama</b> — JR Keiyo line, ~15 min. <b>Add 15 min for the transfer</b>: the Keiyo platforms are a long underground walk from the main concourse and the signage barely warns you</div></div>
+    <div class="task"><div class="task-text">Maihama &rarr; <b>Tokyo DisneySea Station</b> — Disney Resort Line monorail, 2 stops. You cannot walk to DisneySea the way you can to Disneyland</div></div>
+  </div>
+
+  <div class="pack-section">
+    <div class="pack-section-title">Thu Oct 15 — Shibuya + Shimokitazawa</div>
+    <div class="task"><div class="task-text">Shinjuku &rarr; <b>Shibuya</b> — JR Yamanote, 2 stops, ~7 min</div></div>
+    <div class="task"><div class="task-text">Shibuya &rarr; <b>Shimokitazawa</b> — Keio Inokashira line, express, ~6 min</div></div>
+    <div class="task"><div class="task-text">Shimokitazawa &rarr; <b>Shinjuku</b> — <b>Odakyu Odawara line</b>, express, ~10 min. Not the Keio: the Inokashira runs Shibuya to Kichijoji and never reaches Shinjuku</div></div>
+    <div class="task"><div class="task-text">Golden Gai is a walk from Shinjuku station's east side</div></div>
+  </div>
+
+  <div class="pack-section">
+    <div class="pack-section-title">Fri Oct 16 — Kyoto</div>
+    <div class="task"><div class="task-text">Shinjuku &rarr; <b>Tokyo Station</b> — JR Chuo rapid, ~14 min</div></div>
+    <div class="task"><div class="task-text">Tokyo &rarr; <b>Kyoto</b> — Tokaido Shinkansen, <b>Nozomi</b>, 2h15. Reserved seats via SmartEX, both directions</div></div>
+    <div class="task"><div class="task-text">Kyoto Station &rarr; <b>Inari</b> — JR Nara line, 2 stops, ~5 min. The shrine gate is across from the station</div></div>
+    <div class="task"><div class="task-text">Fushimi Inari &rarr; <b>Gion-Shijo</b> — walk to Keihan Fushimi-Inari, ride the <b>Keihan</b>, ~10 min. Do not backtrack to Kyoto Station in between</div></div>
+    <div class="task"><div class="task-text">Gion &rarr; <b>Kyoto Station</b> — Keihan to Shichijo then 12 min walk, or city bus 206 direct</div></div>
+    <div class="task"><div class="task-text"><b>Last usable Nozomi back is around 9pm.</b> Do not cut it fine</div></div>
+  </div>
+
+  <div class="pack-section">
+    <div class="pack-section-title">Sat Oct 17 — Shinjuku to Haneda</div>
+    <div class="task"><div class="task-text"><b>Recommended</b> — Airport Limousine bus from Hyatt Regency Shinjuku to Haneda T3, ~55 min, no transfers</div></div>
+    <div class="task"><div class="task-text"><b>Rail alternative</b> — JR Yamanote to Shinagawa (~20 min) &rarr; Keikyu Airport line to Haneda T3 (~13 min)</div></div>
+  </div>
+</div>
+
 <div class="section" id="tab-places">
   <div class="section-header">
     <h2>Places to See</h2>
@@ -562,6 +637,63 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
   </div>
 </div>
 
+<div class="section" id="tab-kit">
+  <div style="padding:28px 0 8px">
+    <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-weight:400;color:var(--ink)">Konbini &amp; Drugstore</h2>
+    <p style="font-size:13px;color:var(--ink3);margin-top:4px">What to buy where, when something goes wrong</p>
+  </div>
+
+  <div style="background:var(--paper2);border-radius:12px;padding:14px;margin-bottom:18px;border-left:3px solid var(--ink)">
+    <div style="font-size:13px;color:var(--ink2);line-height:1.6">A Japanese 7-Eleven is not a CVS. Konbini carry hydration, cooling sheets, bandages and lozenges — but almost no actual medicine. For painkillers, cold medicine or stomach remedies you need a drugstore: Matsumoto Kiyoshi, Sundrug, Welcia, or Don Quijote. All are open late and several are within a few minutes of Gracery.</div>
+  </div>
+
+  <div class="pack-section">
+    <div class="pack-section-title">At any konbini — 7-Eleven, Lawson, FamilyMart</div>
+    <div class="task"><div class="task-text"><b>Pocari Sweat / Aquarius</b> — the default rehydration drink. Jet lag, heat, hangover, too much walking</div></div>
+    <div class="task"><div class="task-text"><b>Netsusama Sheet</b> (熱さまシート) — cooling gel forehead strips. Fever, headache, a bad night</div></div>
+    <div class="task"><div class="task-text"><b>Nodoame</b> (のど飴) — throat lozenges. Dry plane air, early cold</div></div>
+    <div class="task"><div class="task-text"><b>Bandages and blister pads</b> — small selection, enough for a hot spot mid-day</div></div>
+    <div class="task"><div class="task-text"><b>Hokkairo</b> (ホッカイロ) — stick-on heat packs. Sore shoulders and legs after a long day</div></div>
+    <div class="task"><div class="task-text"><b>Ukon no Chikara / Hepalyse</b> — turmeric shots taken before drinking. Jess only</div></div>
+    <div class="task"><div class="task-text"><b>Umeboshi onigiri, miso soup, plain rice</b> — the local answer to an unsettled stomach</div></div>
+    <div class="task"><div class="task-text"><b>Masks</b> — normal to wear when you have a cough. Nobody will look twice</div></div>
+  </div>
+
+  <div class="pack-section">
+    <div class="pack-section-title">Drugstore only — Matsumoto Kiyoshi, Sundrug, Don Quijote</div>
+    <div class="task"><div class="task-text"><b>Loxonin S</b> — loxoprofen. The strong Japanese painkiller, roughly prescription-grade elsewhere. Headache, sore knees and feet</div></div>
+    <div class="task"><div class="task-text"><b>Eve / Bufferin</b> — ibuprofen and aspirin equivalents, gentler than Loxonin</div></div>
+    <div class="task"><div class="task-text"><b>Pabron Gold</b> — the standard cold and flu powder</div></div>
+    <div class="task"><div class="task-text"><b>Ohta's Isan</b> (太田胃散) — antacid powder for heartburn and overeating</div></div>
+    <div class="task"><div class="task-text"><b>Seirogan</b> (正露丸) — traditional anti-diarrheal. Smells awful, works</div></div>
+    <div class="task"><div class="task-text"><b>Gaster 10</b> — famotidine, for acid stomach</div></div>
+    <div class="task"><div class="task-text"><b>Blister plasters</b> — the real ones, in the foot care aisle. Buy these on day one, not day five</div></div>
+  </div>
+
+  <div class="pack-section">
+    <div class="pack-section-title">Decongestant — buy it there, do not pack it</div>
+    <div class="task"><div class="task-text"><b>Contac 600 Plus</b> &nbsp;コンタック600プラス&nbsp; — the direct Sudafed substitute. Pseudoephedrine is legal to buy inside Japan, just not to bring in</div></div>
+    <div class="task"><div class="task-text"><b>Stona Gel Sinus EX</b> &nbsp;ストナジェルサイナスEX&nbsp; — stands in for Advil Cold &amp; Sinus</div></div>
+    <div class="task"><div class="task-text"><b>Tylenol A</b> &nbsp;タイレノールA&nbsp; — plain acetaminophen, the stand-in for Tylenol Cold</div></div>
+    <div class="task"><div class="task-text"><b>Nasal spray</b> — clears congestion faster than anything oral. Most cheap OTC sprays there are decongestant-type: <b>three days maximum</b> or you get rebound congestion worse than you started with</div></div>
+    <div class="task"><div class="task-text">Show the Japanese name on your phone at the counter. Matsumoto Kiyoshi or Sundrug, both minutes from Gracery</div></div>
+  </div>
+
+  <div class="pack-section">
+    <div class="pack-section-title">Likely maladies on this trip</div>
+    <div class="task"><div class="task-text"><b>Blisters</b> — Fushimi Inari and DisneySea are both long days on your feet. Tape hot spots before they break</div></div>
+    <div class="task"><div class="task-text"><b>Jet lag</b> — 13 hours. Daylight on Oct 11 and no nap past 8pm is the whole treatment</div></div>
+    <div class="task"><div class="task-text"><b>Dehydration</b> — easy to miss when it is not hot. One Pocari a day</div></div>
+    <div class="task"><div class="task-text"><b>Dry throat and colds</b> — aircon, planes, crowds. Lozenges early beats Pabron later</div></div>
+    <div class="task"><div class="task-text"><b>Upset stomach</b> — unfamiliar food plus exhaustion. Plain rice, miso, Ohta's Isan</div></div>
+  </div>
+
+  <div style="background:var(--paper2);border-radius:12px;padding:14px;margin:18px 0;border-left:3px solid var(--green)">
+    <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:8px">Before you pack</div>
+    <div style="font-size:13px;color:var(--ink2);line-height:1.6">Japan treats pseudoephedrine as a stimulant raw material under the Stimulants Control Act. <b>Sudafed, Actifed, Vicks inhalers, NyQuil, Tylenol Cold, Advil Cold &amp; Sinus and Dristan Sinus are all prohibited imports.</b> There are no exceptions, even for medication legally bought at home, and customs does not make on-the-spot humanitarian exceptions. Codeine products and stimulant prescriptions such as Adderall are also banned. Check the <b>active ingredient panel</b>, not the brand name — that is where people get caught. Plain ibuprofen, acetaminophen and antihistamines are fine, up to a two-month supply. Prescriptions travel in their original labelled container with a copy of the script.</div>
+  </div>
+</div>
+
 <div class="section" id="tab-stay">
   <div style="padding:28px 0 16px">
     <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-weight:400;color:var(--ink)">Where We Stay</h2>
@@ -576,7 +708,7 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
       <div style="background:var(--paper);border-radius:8px;padding:10px">
         <div style="font-size:10px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Check-in</div>
         <div style="font-size:14px;font-weight:600;color:var(--ink)">Sun Oct 11</div>
-        <div style="font-size:11px;color:var(--ink3)">After 3:00pm</div>
+        <div style="font-size:11px;color:var(--ink3)">After 2:00pm</div>
       </div>
       <div style="background:var(--paper);border-radius:8px;padding:10px">
         <div style="font-size:10px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Check-out</div>
@@ -608,6 +740,100 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
   <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Travel times from the hotel</div>
   <div id="hotel-times"></div>
 
+  <!-- Daily loops diagram -->
+  <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin:20px 0 10px">Every day from the hotel</div>
+  <div style="background:var(--paper2);border-radius:12px;padding:12px 8px;margin-bottom:10px">
+    <svg width="100%" viewBox="0 0 380 600" role="img" aria-label="Schematic map of greater Tokyo with Hotel Gracery Shinjuku at the centre. Each day is a coloured loop out to the far stop, across to the second, and back to the hotel.">
+      <rect x="40" y="50" width="300" height="300" rx="16" fill="none" stroke="var(--paper3)" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="50" y="68" fill="var(--ink3)" font-family="'DM Sans',sans-serif" font-size="11">greater Tokyo</text>
+
+      <line x1="120" y1="175" x2="230" y2="90" stroke="#7F77DD" stroke-width="1.5"/>
+      <line x1="230" y1="90" x2="258" y2="140" stroke="#7F77DD" stroke-width="1.5"/>
+      <line x1="258" y1="140" x2="120" y2="175" stroke="#7F77DD" stroke-width="1.5"/>
+
+      <line x1="120" y1="178" x2="285" y2="230" stroke="#1D9E75" stroke-width="1.5"/>
+      <line x1="285" y1="230" x2="200" y2="258" stroke="#1D9E75" stroke-width="1.5"/>
+      <line x1="200" y1="258" x2="120" y2="178" stroke="#1D9E75" stroke-width="1.5"/>
+
+      <line x1="120" y1="175" x2="315" y2="185" stroke="#D85A30" stroke-width="1.5"/>
+
+      <line x1="120" y1="175" x2="128" y2="310" stroke="#D4537E" stroke-width="1.5"/>
+      <line x1="128" y1="310" x2="60" y2="312" stroke="#D4537E" stroke-width="1.5"/>
+      <line x1="60" y1="312" x2="120" y2="175" stroke="#D4537E" stroke-width="1.5"/>
+
+      <line x1="106" y1="175" x2="72" y2="175" stroke="#8a8880" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+      <circle cx="120" cy="175" r="9" fill="var(--ink)"/>
+      <text x="112" y="196" text-anchor="end" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Gracery</text>
+
+      <circle cx="60" cy="175" r="7" fill="none" stroke="#8a8880" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <text x="60" y="157" text-anchor="middle" fill="var(--ink3)" font-family="'DM Sans',sans-serif" font-size="11">Nakano</text>
+
+      <circle cx="230" cy="90" r="7" fill="#7F77DD"/>
+      <text x="241" y="94" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Yanaka</text>
+
+      <circle cx="258" cy="140" r="7" fill="#7F77DD"/>
+      <text x="269" y="144" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Akihabara</text>
+
+      <circle cx="315" cy="185" r="7" fill="#D85A30"/>
+      <text x="305" y="166" text-anchor="middle" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">DisneySea</text>
+
+      <circle cx="285" cy="230" r="7" fill="#1D9E75"/>
+      <text x="292" y="248" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Tsukiji</text>
+
+      <circle cx="200" cy="258" r="7" fill="#1D9E75"/>
+      <text x="200" y="278" text-anchor="middle" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">teamLab</text>
+
+      <circle cx="128" cy="310" r="7" fill="#D4537E"/>
+      <text x="139" y="314" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Shibuya</text>
+
+      <circle cx="60" cy="312" r="7" fill="#D4537E"/>
+      <text x="66" y="332" text-anchor="middle" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Shimokita</text>
+
+      <circle cx="240" cy="335" r="7" fill="#8a8880"/>
+      <text x="251" y="339" fill="var(--ink3)" font-family="'DM Sans',sans-serif" font-size="11">Haneda</text>
+
+      <circle cx="60" cy="395" r="7" fill="#BA7517"/>
+      <text x="74" y="399" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Kyoto &#183; 2h15m by shinkansen</text>
+
+      <circle cx="48" cy="436" r="6" fill="#8a8880"/>
+      <text x="64" y="440" fill="var(--ink3)" font-family="'DM Sans',sans-serif" font-size="11">Sun 11 &#183; arrive, Shinjuku</text>
+
+      <circle cx="48" cy="460" r="6" fill="#7F77DD"/>
+      <text x="64" y="464" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Mon 12 &#183; Yanaka, Akihabara</text>
+
+      <circle cx="48" cy="484" r="6" fill="#1D9E75"/>
+      <text x="64" y="488" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Tue 13 &#183; Tsukiji, teamLab 1500</text>
+
+      <circle cx="48" cy="508" r="6" fill="#D85A30"/>
+      <text x="64" y="512" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Wed 14 &#183; DisneySea</text>
+
+      <circle cx="48" cy="532" r="6" fill="#D4537E"/>
+      <text x="64" y="536" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Thu 15 &#183; Shibuya, Shimokitazawa</text>
+
+      <circle cx="48" cy="556" r="6" fill="#BA7517"/>
+      <text x="64" y="560" fill="var(--ink2)" font-family="'DM Sans',sans-serif" font-size="11">Fri 16 &#183; Kyoto</text>
+
+      <circle cx="48" cy="580" r="6" fill="#8a8880"/>
+      <text x="64" y="584" fill="var(--ink3)" font-family="'DM Sans',sans-serif" font-size="11">Sat 17 &#183; fly home</text>
+    </svg>
+  </div>
+  <div style="font-size:12px;color:var(--ink3);line-height:1.6;margin-bottom:18px">Each day is a triangle, not a star: out to the far stop, across to the near one, then home. You do not come back to the hotel in between. Kyoto is drawn detached because 2h15 each way is not comparable to anything else on the map.</div>
+
+  <!-- Onitsuka Tiger -->
+  <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin:20px 0 10px">Walk from the hotel</div>
+  <div style="background:var(--paper2);border-radius:12px;padding:16px;margin-bottom:16px;border-left:3px solid var(--gold)">
+    <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">&#x1F45F; SHOPPING &middot; BRING PASSPORT</div>
+    <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--ink);margin-bottom:2px">Onitsuka Tiger Shinjuku</div>
+    <div style="font-size:12px;color:var(--ink3);margin-bottom:12px">3-26-11 Shinjuku &nbsp;&middot;&nbsp; Shinjuku Station East Exit &nbsp;&middot;&nbsp; a few minutes from Gracery</div>
+    <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:12px">The brand's largest flagship in the world, opened July 2026. Four floors, 1,837 sqm, yellow concrete facade. 2F and 3F carry the NIPPON MADE series, the Astro Boy collaboration and a deep Mexico 66 range, plus Shinjuku-exclusive shirts. Duty-free counters and multilingual staff on site, so Omotesando is not worth the trip any more.</div>
+    <div style="background:var(--paper);border-radius:8px;padding:10px;font-size:12px;color:var(--ink2);line-height:1.6;margin-bottom:12px"><b>Buy them, then leave them in the room.</b> Do not break in new sneakers before Fushimi Inari or DisneySea. Confirm opening hours before you walk over — the older Shinjuku East store runs 10am&ndash;9pm but this is a different shop.</div>
+    <div style="display:flex;gap:8px">
+      <a href="https://maps.google.com/?q=Onitsuka+Tiger+Shinjuku+3-26-11+Shinjuku+Tokyo" target="_blank" style="flex:1;text-align:center;padding:10px;border-radius:8px;background:var(--ink);color:var(--paper);font-family:'DM Sans',sans-serif;font-size:12px;text-decoration:none;letter-spacing:.04em">Maps &#x2197;</a>
+      <a href="https://www.onitsukatiger.com/" target="_blank" style="flex:1;text-align:center;padding:10px;border-radius:8px;border:1px solid var(--paper3);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:12px;text-decoration:none;letter-spacing:.04em">Brand site &#x2197;</a>
+    </div>
+  </div>
+
   <!-- Notes -->
   <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin:20px 0 8px">Notes</div>
   <textarea id="stay-notes" class="note-area" placeholder="Notes, requests, reminders..."></textarea>
@@ -629,66 +855,60 @@ function today(){return new Date().toLocaleDateString('en-US',{month:'short',day
 // DATA
 var DAYS=[
   {day:'Travel Day',date:'Sat Oct 10',icon:'✈️',title:'Depart Washington',
-   desc:'United flight departs IAD 12:35pm. Boeing 777. 14h 20m nonstop to Haneda. Aisle seats across from each other. Land Sunday 3:55pm Tokyo time.',
-   tips:['Aisle seats across from each other — center section of 777','14hr 20min flight — United Economy on a 777 is decent','Set watch to Tokyo time when you board — land Sunday afternoon'],
+   desc:'UA 803 departs IAD 12:35pm. Boeing 777, 14h 20m nonstop to Haneda. Conf. EFX3H4 — seats 50G/50J and 49G/49J. Land Sunday 3:55pm Tokyo time.',
+   tips:['Set your watch to Tokyo time when you board — you land Sunday afternoon','Compression socks in the carry-on, not the checked bag','14h 20m on a 777 in economy — get up and walk every couple of hours'],
    lounges:[
      {name:'Etihad Lounge with Chase',loc:'Concourse A near Gate A14',hours:'6am - 10pm daily',access:'Chase Sapphire Reserve: free + 2 guests. Priority Pass Select: 1 free visit/year.',amenities:'Full table service menu, buffet, cocktails, showers, family room',note:'Best option — this is a Chase-native lounge. Get here early.'},
      {name:'Virgin Atlantic Clubhouse',loc:'Between Concourses A & B, near Gate A32',hours:'6am - 1pm',access:'Priority Pass: complimentary',amenities:'Light buffet, bar, workspace, tarmac views',note:'Morning hours only — good if your Etihad visit is used up'},
    ],
    places:[{icon:'🛫',name:'IAD — Dulles International',type:'Departs IAD 12:35pm',maps:'https://maps.google.com/?q=Dulles+International+Airport'},{icon:'🛬',name:'HND — Tokyo Haneda',type:'Arrive Sun Oct 11 at 3:55pm',maps:'https://maps.google.com/?q=Tokyo+Haneda+Airport'}],
-   tasks:[{l:'Check in online 24hrs before departure',d:false},{l:'Check seat assignment in United app',d:false},{l:'Download United app for mobile boarding pass',d:false},{l:'Charge all devices night before',d:false},{l:'Pack compression socks in carry-on',d:false}],
+   tasks:[{l:'Night before — charge every device, pack chargers in carry-on',d:false},{l:'T-24h — check in online, confirm seats in United app',d:false},{l:'09:30 — arrive IAD, bag drop',d:false},{l:'10:00 — Etihad Lounge with Chase, Concourse A near Gate A14',d:false},{l:'11:50 — boarding',d:false},{l:'12:35 — UA 803 departs IAD',d:false}],
    note:''},
-  {day:'Day 1',date:'Sun Oct 11',icon:'⛩️',title:'Arrive — Asakusa',
-   desc:'Land at Haneda 3:55pm. Get Suica card at airport. Take train to Shinjuku (~40 min). Check into Hotel Gracery Shinjuku. Godzilla head is on the roof terrace. Easy first evening in Kabukicho.',
-   tips:['Get Suica card at Haneda airport kiosk — works on all trains and many shops','Monorail from Haneda to Asakusa takes about 40 min','Konbini food is genuinely excellent — eat like a local tonight'],
-   places:[{icon:'🗾',name:'Haneda Airport',type:'Arrival terminal',maps:'https://maps.google.com/?q=Tokyo+Haneda+Airport'},{icon:'🏮',name:'Senso-ji Temple',type:'Temple — Asakusa',maps:'https://maps.google.com/?q=Senso-ji+Temple+Tokyo'},{icon:'🛍️',name:'Nakamise Street',type:'Shopping street',maps:'https://maps.google.com/?q=Nakamise+Street+Asakusa+Tokyo'}],
-   tasks:[{l:'Get Suica card at Haneda airport',d:false},{l:'Load 5000 yen onto Suica',d:false},{l:'Check into Hotel Gracery Shinjuku — Kabukicho, Shinjuku',d:false},{l:'Walk Nakamise Street',d:false},{l:'Visit Senso-ji before dark',d:false}],
+  {day:'Day 1',date:'Sun Oct 11',icon:'🛬',title:'Arrive — Shinjuku',
+   desc:'Land Haneda 3:55pm. Clear immigration, get to Shinjuku, check into Gracery. Nothing scheduled — this day is jet lag and a konbini run.',
+   tips:['Have your Visit Japan Web QR codes screenshotted before you land — no signal in the immigration hall','Digital Suica in Apple Wallet beats a plastic card — top up at the airport over wifi','Do not nap past 8pm. Push through to a normal bedtime or you lose Monday'],
+   places:[{icon:'🗾',name:'Haneda Airport Terminal 3',type:'Arrival',maps:'https://maps.google.com/?q=Tokyo+Haneda+Airport+Terminal+3'},{icon:'🏨',name:'Hotel Gracery Shinjuku',type:'Check-in — Kabukicho',maps:'https://maps.google.com/?q=Hotel+Gracery+Shinjuku'},{icon:'🏙️',name:'Kabukicho',type:'Evening walk',maps:'https://maps.google.com/?q=Kabukicho+Shinjuku+Tokyo'}],
+   tasks:[{l:'15:55 — land HND Terminal 3',d:false},{l:'16:15 — immigration and customs, Visit Japan Web QR',d:false},{l:'17:00 — top up Suica in Apple Wallet',d:false},{l:'17:15 — Airport Limousine bus T3 → Hyatt Regency Shinjuku (~55 min)',d:false},{l:'18:30 — check into Hotel Gracery Shinjuku',d:false},{l:'19:00 — konbini run, walk Kabukicho, Godzilla head on the terrace',d:false},{l:'22:00 — lights out, no late nap',d:false}],
    note:''},
-  {day:'Day 2',date:'Mon Oct 12',icon:'🍣',title:'Tsukiji + Old Tokyo',
-   desc:'Early sushi breakfast at Tsukiji Outer Market (arrive 8am or earlier). Walk Yanaka — old Tokyo untouched.',
-   tips:['Queue at Sushi Dai or Daiwa before 8am — the line moves faster than it looks','Yanaka is the most un-touristy neighborhood in central Tokyo — worth 2 hours','Grab a melon pan from any Nakamise stall'],
-   places:[{icon:'🐟',name:'Tsukiji Outer Market',type:'Fish market — breakfast',maps:'https://maps.google.com/?q=Tsukiji+Outer+Market+Tokyo'},{icon:'🏘️',name:'Yanaka',type:'Old neighborhood — afternoon walk',maps:'https://maps.google.com/?q=Yanaka+Tokyo'}],
-   tasks:[{l:'Depart ryokan by 6:30am for Tsukiji',d:false},{l:'Sushi breakfast at Tsukiji',d:false},{l:'Walk Yanaka neighborhood',d:false}],
+  {day:'Day 2',date:'Mon Oct 12',icon:'🏘️',title:'Yanaka + Akihabara',
+   desc:'Old Tokyo in the morning, card shops and electronics in the afternoon. Both stops sit on the Yamanote, so the whole day is one rail corridor.',
+   tips:['Yanaka is the least touristy neighborhood in central Tokyo — give it two unhurried hours','Hareruya Akihabara is the big MTG singles shop — bring a want list and a binder'],
+   places:[{icon:'🏘️',name:'Yanaka Ginza',type:'Nippori west exit — morning',maps:'https://maps.google.com/?q=Yanaka+Ginza+Tokyo'},{icon:'🃏',name:'Hareruya Akihabara',type:'MTG singles',maps:'https://maps.google.com/?q=Hareruya+Akihabara+Tokyo'},{icon:'🕹️',name:'Super Potato',type:'Retro games — Akihabara',maps:'https://maps.google.com/?q=Super+Potato+Akihabara+Tokyo'},{icon:'🔌',name:'Yodobashi Camera',type:'Electronics — Akihabara',maps:'https://maps.google.com/?q=Yodobashi+Camera+Akihabara'}],
+   tasks:[{l:'09:00 — Shinjuku → Nippori, JR Yamanote outer loop (~20 min)',d:false},{l:'09:30 — Yanaka Ginza, the cemetery, the backstreets',d:false},{l:'12:00 — lunch in Yanaka',d:false},{l:'13:00 — Nippori → Akihabara, JR Yamanote inner loop (~8 min)',d:false},{l:'13:30 — Hareruya, MTG singles',d:false},{l:'15:00 — Super Potato and Yodobashi',d:false},{l:'18:00 — Akihabara → Shinjuku, JR Chuo-Sobu local (~17 min)',d:false}],
    note:''},
-  {day:'Day 3',date:'Tue Oct 13',icon:'🎮',title:'Akihabara + TeamLab',
-   desc:'Morning in Akihabara — retro gaming, electronics. TeamLab Borderless entry is 3:00pm (1500hrs) — tickets purchased and verified.',
-   tips:['Super Potato retro game store — both of you will love it','Yodobashi Camera: 8 floors of electronics','TeamLab: allow 2-3 hours minimum, wear comfortable shoes','Entry ticket is timed for 3:00pm — no need to rush the morning'],
-   places:[{icon:'🕹️',name:'Super Potato',type:'Retro game store — Akihabara',maps:'https://maps.google.com/?q=Super+Potato+Akihabara+Tokyo'},{icon:'🎨',name:'TeamLab Borderless',type:'Digital art museum — 3:00pm entry',maps:'https://maps.google.com/?q=TeamLab+Borderless+Tokyo'},{icon:'🔌',name:'Yodobashi Camera',type:'Electronics — Akihabara',maps:'https://maps.google.com/?q=Yodobashi+Camera+Akihabara'}],
-   tasks:[{l:'Morning in Akihabara',d:false},{l:'TeamLab Borderless — 3:00pm (1500hrs) entry',d:false}],
+  {day:'Day 3',date:'Tue Oct 13',icon:'🍣',title:'Tsukiji + teamLab',
+   desc:'Early sushi at Tsukiji Outer Market, a gap in the middle, teamLab Borderless at 3:00pm. Entry is timed and non-negotiable — everything else bends around it.',
+   tips:['Tsukiji stalls wind down by 11am — be there by 8','The midday gap is real: Tsukiji to Shinjuku is ~25 min each way, so a hotel nap costs about an hour of travel. On day three of jet lag that is usually worth paying','teamLab Borderless is at Azabudai Hills, not Odaiba'],
+   places:[{icon:'🐟',name:'Tsukiji Outer Market',type:'Breakfast — 8:00am',maps:'https://maps.google.com/?q=Tsukiji+Outer+Market+Tokyo'},{icon:'🎨',name:'teamLab Borderless',type:'Azabudai Hills — 3:00pm entry',maps:'https://maps.google.com/?q=teamLab+Borderless+Azabudai+Hills+Tokyo'},{icon:'🏬',name:'Nakano Broadway',type:'Optional — unscheduled',maps:'https://maps.google.com/?q=Nakano+Broadway+Tokyo'},{icon:'👟',name:'Onitsuka Tiger Shinjuku',type:'World flagship — East Exit',maps:'https://maps.google.com/?q=Onitsuka+Tiger+Shinjuku+Tokyo'}],
+   tasks:[{l:'07:30 — Shinjuku → Tsukijishijo, Toei Oedo line (~20 min)',d:false},{l:'08:00 — sushi breakfast, Tsukiji Outer Market',d:false},{l:'10:30 — back to the hotel to rest, or Nakano Broadway on the Chuo rapid',d:false},{l:'11:00 — Onitsuka Tiger Shinjuku flagship, East Exit (bring passport for tax-free)',d:false},{l:'14:15 — Tsukiji → Kamiyacho, Hibiya line (~10 min), walk to Azabudai Hills',d:false},{l:'15:00 — teamLab Borderless entry (timed, tickets verified)',d:false},{l:'18:00 — dinner at Azabudai Hills, or Hibiya → Roppongi → Oedo back to Shinjuku',d:false}],
    note:''},
   {day:'Day 4',date:'Wed Oct 14',icon:'🏰',title:'Tokyo DisneySea',
-   desc:'Full day. Tickets purchased and verified. Arrive gates open at 9am. Fantasy Springs is the crown jewel. Evening Fantasmic lagoon show.',
-   tips:['Go straight to Fantasy Springs the moment gates open — nothing else first','Buy Premier Access in the DisneySea app before arriving','The Fantasmic lagoon show is worth staying for — secure a dinner table with view by 7pm'],
-   places:[{icon:'🏰',name:'Tokyo DisneySea',type:'Theme park — full day',maps:'https://maps.google.com/?q=Tokyo+DisneySea'}],
-   tasks:[{l:'Download DisneySea app',d:false},{l:'Arrive at gates 8:45am',d:false},{l:'Fantasy Springs first',d:false},{l:'Dinner reservation with lagoon view',d:false},{l:'Watch Fantasmic evening show',d:false}],
+   desc:'Full day, gates at 9am. Tickets purchased and verified. Fantasy Springs first, Fantasmic last.',
+   tips:['Go straight to Fantasy Springs the moment gates open — nothing else first','Buy Premier Access in the Tokyo Disney Resort app, not at a kiosk','Secure a lagoon-view dinner table by 7pm if you want Fantasmic without standing'],
+   places:[{icon:'🏰',name:'Tokyo DisneySea',type:'Full day',maps:'https://maps.google.com/?q=Tokyo+DisneySea'},{icon:'🚝',name:'Maihama Station',type:'Transfer to Disney Resort Line',maps:'https://maps.google.com/?q=Maihama+Station+Tokyo'}],
+   tasks:[{l:'07:00 — breakfast, Premier Access ready in the app',d:false},{l:'07:30 — Shinjuku → Tokyo Station, JR Chuo rapid (~14 min)',d:false},{l:'07:50 — Tokyo → Maihama, JR Keiyo line (~15 min + long transfer walk)',d:false},{l:'08:30 — Disney Resort Line monorail, 2 stops to DisneySea',d:false},{l:'08:45 — at the gates',d:false},{l:'09:00 — opening, Fantasy Springs first',d:false},{l:'12:30 — lunch, then the rest of the park',d:false},{l:'19:00 — dinner, lagoon-view table',d:false},{l:'20:30 — Fantasmic',d:false},{l:'22:00 — monorail, Keiyo, Chuo back to Shinjuku',d:false}],
    note:''},
-  {day:'Day 5',date:'Thu Oct 15',icon:'🎸',title:'Odaiba + Shibuya + Shimokitazawa',
-   desc:'Odaiba morning — Unicorn Gundam. Shibuya Crossing at dusk. Then 10 min on the Keio Line to Shimokitazawa — vintage shops, live music, dinner. This is the best evening of the trip.',
-   tips:['Check the Unicorn Gundam transformation schedule online — it transforms at set times','Shibuya Crossing: best viewed from above at Mag\'s Park or the Starbucks','Any restaurant building in Shinjuku — every floor is a different restaurant'],
-   places:[{icon:'🤖',name:'Unicorn Gundam',type:'Landmark — Odaiba',maps:'https://maps.google.com/?q=Unicorn+Gundam+Statue+Odaiba+Tokyo'},{icon:'🚦',name:'Shibuya Crossing',type:'Iconic crossing — dusk',maps:'https://maps.google.com/?q=Shibuya+Crossing+Tokyo'},{icon:'🎸',name:'Shimokitazawa',type:'Indie neighborhood — evening',maps:'https://maps.google.com/?q=Shimokitazawa+Tokyo'},{icon:'🛍️',name:'Ichiban-gai',type:'Vintage shopping street — Shimokitazawa',maps:'https://maps.google.com/?q=Shimokitazawa+Ichiban-gai+Tokyo'},{icon:'🍜',name:'Shimokitazawa ramen',type:'Dinner — explore and pick one',maps:'https://maps.google.com/?q=ramen+Shimokitazawa+Tokyo'}],
-   tasks:[{l:'Odaiba morning - Unicorn Gundam',d:false},{l:'Shibuya Crossing at dusk',d:false},{l:'Keio Inokashira Line to Shimokitazawa (10 min from Shibuya)',d:false},{l:'Walk Ichiban-gai vintage shops',d:false},{l:'Find a live music bar or ramen spot',d:false}],
+  {day:'Day 5',date:'Thu Oct 15',icon:'🎸',title:'Shibuya + Shimokitazawa',
+   desc:'Late start, Shibuya through the afternoon, Shimokitazawa for the evening. Golden Gai walk-through on the way home. The one day that runs near-stop-first, because Shimokitazawa wants the evening.',
+   tips:['Shibuya Crossing from above: Mag\'s Park on the Magnet roof, or the Starbucks','Golden Gai: Jack is under 20, so smoking-permitted bars are off limits by law, not just policy. Look for the 喫煙可 sign at the door. Walk the alleys, drink elsewhere'],
+   places:[{icon:'🚦',name:'Shibuya Crossing',type:'Afternoon',maps:'https://maps.google.com/?q=Shibuya+Crossing+Tokyo'},{icon:'🛍️',name:'Shimokitazawa Ichiban-gai',type:'Vintage and thrift',maps:'https://maps.google.com/?q=Shimokitazawa+Ichiban-gai+Tokyo'},{icon:'🍜',name:'Shimokitazawa dinner',type:'Pick one, non-smoking',maps:'https://maps.google.com/?q=restaurants+Shimokitazawa+Tokyo'},{icon:'🏮',name:'Golden Gai',type:'Walk-through only',maps:'https://maps.google.com/?q=Golden+Gai+Shinjuku+Tokyo'}],
+   tasks:[{l:'11:00 — Shinjuku → Shibuya, JR Yamanote (~7 min)',d:false},{l:'11:30 — Shibuya Crossing, Mag\'s Park, Center-gai',d:false},{l:'15:00 — Shibuya → Shimokitazawa, Keio Inokashira express (~6 min)',d:false},{l:'15:30 — Ichiban-gai, vintage and thrift',d:false},{l:'18:30 — dinner in Shimokitazawa, non-smoking spot',d:false},{l:'20:30 — Shimokitazawa → Shinjuku, Odakyu Odawara express (~10 min)',d:false},{l:'21:00 — Golden Gai walk-through on the way to the hotel',d:false}],
    note:''},
-  {day:'Day 6',date:'Fri Oct 16',icon:'🚅',title:'Shinkansen to Kyoto',
-   desc:'Day trip on the bullet train (2h15m each way). Fushimi Inari torii gates, Golden Pavilion, Gion at dusk.',
-   tips:['Fushimi Inari: arrive 7am to beat the crowds — 2 hour hike up through thousands of gates','Kinkaku-ji (Golden Pavilion) entry is 500 yen and takes about 30 min','Gion: walk Hanamikoji Street at 5-6pm for the best chance of seeing geisha'],
-   places:[{icon:'⛩️',name:'Fushimi Inari Taisha',type:'Shrine — 7am start',maps:'https://maps.google.com/?q=Fushimi+Inari+Taisha+Kyoto'},{icon:'🏯',name:'Kinkaku-ji',type:'Golden Pavilion',maps:'https://maps.google.com/?q=Kinkakuji+Kyoto'},{icon:'🏮',name:'Gion District',type:'Geisha district — dusk',maps:'https://maps.google.com/?q=Gion+Kyoto'}],
-   tasks:[{l:'Book Shinkansen reserved seats',d:false},{l:'Depart Tokyo Station by 7:30am',d:false},{l:'Fushimi Inari early morning',d:false},{l:'Kinkaku-ji midday',d:false},{l:'Gion at dusk',d:false},{l:'Return Shinkansen by 9pm',d:false}],
+  {day:'Day 6',date:'Fri Oct 16',icon:'🚅',title:'Kyoto Day Trip',
+   desc:'Shinkansen down and back, 2h15m each way. Two stops only, both on the Keihan line and ten minutes apart: Fushimi Inari, then Gion. Kinkaku-ji is cut — it needs a bus.',
+   tips:['You cannot reach Fushimi Inari at the ideal 7am on a day trip from Tokyo. Accept ~9:45 and hike past the lower gates to Yotsutsuji, where the crowd thins out','Last usable Nozomi back is around 9pm. Do not cut it fine'],
+   places:[{icon:'⛩️',name:'Fushimi Inari Taisha',type:'Morning — JR Nara line to Inari',maps:'https://maps.google.com/?q=Fushimi+Inari+Taisha+Kyoto'},{icon:'🏮',name:'Gion District',type:'Afternoon — Keihan to Gion-Shijo',maps:'https://maps.google.com/?q=Gion+Kyoto'},{icon:'🚅',name:'Kyoto Station',type:'Shinkansen arrival and departure',maps:'https://maps.google.com/?q=Kyoto+Station'}],
+   tasks:[{l:'BEFORE THE TRIP — book Nozomi reserved seats on SmartEX, both directions',d:false},{l:'06:30 — Shinjuku → Tokyo Station, JR Chuo rapid (~14 min)',d:false},{l:'07:00 — Nozomi to Kyoto (2h15m)',d:false},{l:'09:30 — Kyoto Station → Inari, JR Nara line (~5 min)',d:false},{l:'09:45 — Fushimi Inari, hike to Yotsutsuji and back (~90 min)',d:false},{l:'12:00 — Keihan Fushimi-Inari → Gion-Shijo (~10 min)',d:false},{l:'12:30 — lunch in Gion',d:false},{l:'13:30 — Hanamikoji, Shirakawa canal, Yasaka shrine',d:false},{l:'18:00 — Gion → Kyoto Station, Keihan to Shichijo or bus 206',d:false},{l:'19:30 — Nozomi to Tokyo',d:false},{l:'22:15 — Tokyo Station → Shinjuku, back at the hotel',d:false}],
    note:''},
-  {day:'Day 7',date:'Sat Oct 17 (morning)',icon:'🌅',title:'Meiji Shrine — Final Morning',
-   desc:'Peaceful morning at Meiji Shrine — ancient forest in the heart of Tokyo. Evening in Golden Gai.',
-   tips:['Meiji Shrine: arrive 8am for total peace before tour groups arrive','Golden Gai: 200+ tiny bars with 6-8 seats each — commit to one and stay all night','Order whatever the bartender recommends — that is the Golden Gai move'],
-   places:[{icon:'⛩️',name:'Meiji Shrine',type:'Shrine — morning',maps:'https://maps.google.com/?q=Meiji+Shrine+Tokyo'},{icon:'🍶',name:'Golden Gai',type:'Tiny bars — Shinjuku evening',maps:'https://maps.google.com/?q=Golden+Gai+Shinjuku+Tokyo'}],
-   tasks:[{l:'Meiji Shrine by 8am',d:false},{l:'Harajuku afternoon',d:false},{l:'Golden Gai evening',d:false}],
-   note:''},
-  {day:'Travel Day',date:'Sat Oct 17',icon:'✈️',title:'Fly Home',
-   desc:'United flight departs HND 3:45pm. Aisle seats across from each other. 12h 50m nonstop. Arrive IAD 3:35pm same day.',
-   tips:['Flight departs 3:45pm — check out by 11am and explore last spots or duty free','Aisle seats across from each other, easy to talk across the aisle','You gain back the day crossing the dateline — arrive 3:35pm same Saturday'],
+  {day:'Day 7',date:'Sat Oct 17',icon:'✈️',title:'Fly Home',
+   desc:'UA 804 departs HND 3:45pm. 12h 50m nonstop, arrive IAD 3:35pm the same Saturday. Check out is 11am, so the morning is packing and not much else.',
+   tips:['There is no real morning excursion once you account for check-out and the run to Haneda','Spend leftover yen at the airport, not on a last-minute errand in the city','TIAT Lounge in Terminal 3 is open 24h and has showers'],
    lounges:[
      {name:'TIAT Lounge',loc:'Terminal 3, 4F near Gate 110',hours:'24 hours',access:'Priority Pass: complimentary',amenities:'Japanese buffet: edamame, fried chicken, rice balls, sake, Japanese beer, showers, massage chairs',note:'Your best bet — solid Japanese food, showers if you want to freshen up before the flight'},
      {name:'Sky Lounge South',loc:'Terminal 3, airside near Gate 108',hours:'24 hours',access:'Priority Pass: complimentary',amenities:'Drinks, snacks, panoramic runway views',note:'Good views but lighter on food than TIAT — worth a look'},
    ],
-   places:[{icon:'🛬',name:'Haneda Airport',type:'Departure terminal',maps:'https://maps.google.com/?q=Tokyo+Haneda+Airport'}],
-   tasks:[{l:'Check in online night before departure',d:false},{l:'Check out of ryokan by 11am',d:false},{l:'Haneda duty free shopping',d:false},{l:'Leave 1000 yen for ryokan staff',d:false},{l:'Arrive Haneda by 1:30pm for 3:45pm departure',d:false}],
+   places:[{icon:'🛬',name:'Haneda Airport Terminal 3',type:'Departs HND 3:45pm',maps:'https://maps.google.com/?q=Tokyo+Haneda+Airport+Terminal+3'}],
+   tasks:[{l:'Night before — check in online, repack, weigh the bags',d:false},{l:'08:00 — breakfast, final pack',d:false},{l:'11:00 — check out of Hotel Gracery',d:false},{l:'12:15 — Airport Limousine bus to Haneda T3 (~55 min)',d:false},{l:'13:15 — bag drop and security',d:false},{l:'13:45 — TIAT Lounge, Terminal 3',d:false},{l:'15:15 — boarding',d:false},{l:'15:45 — UA 804 departs HND',d:false}],
    note:''}
 ];
 
@@ -703,6 +923,91 @@ var dayState=(function(){
     return {tasks:s.tasks||[],note:s.note||'',open:s.open||false};
   });
 })();
+
+function writeClipboard(text){
+  if(navigator.clipboard && window.isSecureContext){
+    return navigator.clipboard.writeText(text);
+  }
+  return new Promise(function(res,rej){
+    try{
+      var ta=document.createElement('textarea');
+      ta.value=text;
+      ta.style.cssText='position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(ta);
+      ta.focus();ta.select();
+      var ok=document.execCommand('copy');
+      document.body.removeChild(ta);
+      ok?res():rej(new Error('copy failed'));
+    }catch(e){rej(e);}
+  });
+}
+
+function dayPlanText(di){
+  var day=DAYS[di];
+  var state=dayState[di]||{tasks:[],note:''};
+  var out=day.date+' — '+day.title+'\n';
+  (day.tasks||[]).forEach(function(t,ti){
+    out+=((state.tasks&&state.tasks[ti])?'[x] ':'[ ] ')+t.l+'\n';
+  });
+  if(day.places&&day.places.length){
+    out+='\nStops:\n';
+    day.places.forEach(function(p){ out+='- '+p.name+' ('+p.type+')\n'; });
+  }
+  return out;
+}
+
+function copyDayPlan(di){
+  var btn=document.getElementById('copy-day-'+di);
+  writeClipboard(dayPlanText(di)).then(function(){
+    if(btn){var o=btn.textContent;btn.textContent='Copied — paste into Messages';setTimeout(function(){btn.textContent=o;},2500);}
+  }).catch(function(){
+    if(btn)btn.textContent='Copy failed — select the text manually';
+  });
+}
+
+function journalText(){
+  var out='TOKYO — OCT 2026 — TRIP JOURNAL\nExported '+today()+'\n';
+  DAYS.forEach(function(day,di){
+    var state=dayState[di]||{tasks:[],note:''};
+    var photoCount=(photoData['day_'+di]||[]).length;
+    var results=(day.results||[]);
+    if(!state.note && !results.length && !photoCount) return;
+    out+='\n\n=== '+day.date+' — '+day.title+' ===\n';
+    if(state.note) out+='\n'+state.note+'\n';
+    results.forEach(function(r){ out+='\n['+r.date+'] '+r.note+'\n'; });
+    if(photoCount) out+='\n('+photoCount+' photo'+(photoCount===1?'':'s')+' saved on this day — not included in this text export)\n';
+  });
+  try{
+    var sn=LS.get('tk_stay_notes',[]);
+    if(sn && sn.length){
+      out+='\n\n=== Stay notes ===\n';
+      sn.forEach(function(n){ out+='\n['+(n.date||'')+'] '+(n.text||'')+'\n'; });
+    }
+  }catch(e){}
+  return out;
+}
+
+function exportJournal(mode){
+  var msg=document.getElementById('journal-export-msg');
+  var text=journalText();
+  if(mode==='download'){
+    try{
+      var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='tokyo-journal.txt';
+      document.body.appendChild(a);a.click();
+      setTimeout(function(){URL.revokeObjectURL(a.href);document.body.removeChild(a);},1000);
+      if(msg)msg.textContent='Downloaded tokyo-journal.txt';
+    }catch(e){ if(msg)msg.textContent='Download failed — try Copy all notes instead'; }
+    return;
+  }
+  writeClipboard(text).then(function(){
+    if(msg)msg.textContent='Copied. Paste it into Notes, email or a message.';
+  }).catch(function(){
+    if(msg)msg.textContent='Copy failed — use Download .txt instead';
+  });
+}
 
 function save(){
   LS.set('tk_days',dayState);
@@ -972,6 +1277,13 @@ function renderDays(){
         row.style.cursor='pointer';
         taskDiv.appendChild(row);
       });
+      var copyBtn=document.createElement('button');
+      copyBtn.className='log-btn';
+      copyBtn.style.cssText='width:100%;margin-top:10px';
+      copyBtn.textContent='Copy this day to send';
+      copyBtn.id='copy-day-'+di;
+      copyBtn.setAttribute('onclick','copyDayPlan('+di+')');
+      taskDiv.appendChild(copyBtn);
       body.appendChild(taskDiv);
     }
 
@@ -1352,9 +1664,9 @@ function renderYen(){
 }
 
 // DARK MODE
-var APP_VERSION = '1.9';
+var APP_VERSION = '2.5';
 var savedVersion = LS.get('tk_version', '0');
-// If version changed, could reset state here in future
+if(savedVersion !== APP_VERSION){ try{ localStorage.removeItem('tk_days'); }catch(e){} }
 LS.set('tk_version', APP_VERSION);
 
 var isDark = LS.get('tk_dark', false);
