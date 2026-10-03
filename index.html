@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Tokyo — Oct 2026 · v2.6</title>
+<title>Tokyo — Oct 2026 · v2.7</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -293,7 +293,7 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
   </button>
   <div class="add-place-form" id="add-place-form">
     <input class="add-input" id="place-name" placeholder="Place name (e.g. Senso-ji Temple)">
-    <input class="add-input" id="place-day" placeholder="Which day? (e.g. Day 2)">
+    <input class="add-input" id="place-day" placeholder="Which day? (e.g. Tue Oct 13)">
     <input class="add-input" id="place-note" placeholder="Note (e.g. arrive before 9am)">
     <div class="add-row">
       <button class="add-submit" onclick="addPlace()">Pin it</button>
@@ -1367,9 +1367,7 @@ function renderPlaces(){
   // Built-in highlights by day
   var highlights=[
     // STREET FOOD SPOTS — from sugoii-japan.com/street-food-spots-in-tokyo
-    {day:'Day 1',name:'Nakamise Dori',icon:'🏮',note:'Street food: red bean buns, mochi cakes. One of oldest shopping streets in Tokyo.',maps:'https://goo.gl/maps/po61iwML4x7YefRE8'},
-    {day:'Day 1',name:'Hoppy Street',icon:'🍺',note:'2 min from Asakusa Station. Yakitori, grilled seafood, motsuni beef stew. Named after the beer served here.',maps:'https://goo.gl/maps/6sbYg2W9KWYs1UES8'},
-    {day:'Day 2',name:'Tsukiji Fish Market',icon:'🐟',note:'Street food: tamagoyaki sticks, fried corn skewers, potato salad on a stick. Get there before 8am.',maps:'https://goo.gl/maps/YhK2jodSYjKkWzuQA'},
+    {day:'Tue Oct 13',name:'Tsukiji Fish Market',icon:'🐟',note:'Street food: tamagoyaki sticks, fried corn skewers, potato salad on a stick. Get there before 8am.',maps:'https://goo.gl/maps/YhK2jodSYjKkWzuQA'},
     {day:'Mon Oct 12',name:'Yanaka Ginza Shopping Street',icon:'🐱',note:'Cat-themed street. Try hasami-age renkon, dango dumplings, and menchi katsu at Niku no Suzuki.',maps:'https://goo.gl/maps/UyVqWTcu2RWEt1WU7'},
     {day:'Mon Oct 12',name:'Ameya Yokocho',icon:'🍡',note:'Candy store alley near Ueno. Try candied fruit skewers — strawberries glazed in melted sugar.',maps:'https://goo.gl/maps/5QTXzbPoT5UyjKCJ9'},
     {day:'Tue Oct 13',name:'Tsukishima Monja Street',icon:'🥞',note:'70+ monjayaki restaurants. Tokyos own savory pancake dish — lighter and runnier than okonomiyaki.',maps:'https://goo.gl/maps/qgjUPUn9MvHow2f88'},
@@ -1665,7 +1663,7 @@ function renderYen(){
 }
 
 // DARK MODE
-var APP_VERSION = '2.6';
+var APP_VERSION = '2.7';
 var APP_UPDATED = 'Oct 3, 2026';
 var savedVersion = LS.get('tk_version', '0');
 if(savedVersion !== APP_VERSION){ try{ localStorage.removeItem('tk_days'); }catch(e){} }
@@ -1865,14 +1863,14 @@ function initHotelMap(){
     });
     L.marker([HOTEL.lat,HOTEL.lng],{icon:hotelIcon})
       .addTo(map)
-      .bindPopup('<strong>Hotel Gracery Shinjuku</strong><br>Your base for 7 nights')
+      .bindPopup('<strong>Hotel Gracery Shinjuku</strong><br>Your base for 6 nights')
       .openPopup();
 
     // Destination markers
     var colors = {
-      'Day 1':'#c8392b','Day 2':'#b8860b','Day 3':'#a855f7',
-      'Day 4':'#ec4899','Day 5':'#06b6d4','Day 6':'#f0a500',
-      'Day 7':'#2d6a4f','Day 7 eve':'#2d6a4f','Departure':'#1a4a7a'
+      'Mon Oct 12':'#7F77DD','Tue Oct 13':'#1D9E75','Wed Oct 14':'#D85A30',
+      'Thu Oct 15':'#D4537E','Fri Oct 16':'#BA7517','Sat Oct 17':'#888780',
+      'Unscheduled':'#888780'
     };
     DEST.forEach(function(d){
       var col = colors[d.day] || '#666';
