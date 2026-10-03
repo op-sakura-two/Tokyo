@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Tokyo — Oct 2026 · v2.5</title>
+<title>Tokyo — Oct 2026 · v2.6</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -176,6 +176,7 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
   <div class="hero-tag">Father &amp; Son &nbsp;·&nbsp; Japan</div>
   <div class="hero-title">Tokyo,<br><em>October.</em></div>
   <div class="hero-dates">Oct 11 – Oct 17, 2026 &nbsp;·&nbsp; 7 days in Tokyo</div>
+  <div id="hero-version" style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-top:8px"></div>
   <div class="hero-bottom">
   <button onclick="toggleDark()" id="dark-btn" style="position:absolute;top:-44px;right:0;background:none;border:1px solid var(--paper3);border-radius:100px;padding:5px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--ink3);cursor:pointer;letter-spacing:.04em">&#9788; Light</button>
     <div class="countdown-pill"><span id="hero-cd">—</span> days to go</div>
@@ -1369,23 +1370,23 @@ function renderPlaces(){
     {day:'Day 1',name:'Nakamise Dori',icon:'🏮',note:'Street food: red bean buns, mochi cakes. One of oldest shopping streets in Tokyo.',maps:'https://goo.gl/maps/po61iwML4x7YefRE8'},
     {day:'Day 1',name:'Hoppy Street',icon:'🍺',note:'2 min from Asakusa Station. Yakitori, grilled seafood, motsuni beef stew. Named after the beer served here.',maps:'https://goo.gl/maps/6sbYg2W9KWYs1UES8'},
     {day:'Day 2',name:'Tsukiji Fish Market',icon:'🐟',note:'Street food: tamagoyaki sticks, fried corn skewers, potato salad on a stick. Get there before 8am.',maps:'https://goo.gl/maps/YhK2jodSYjKkWzuQA'},
-    {day:'Day 2',name:'Yanaka Ginza Shopping Street',icon:'🐱',note:'Cat-themed street. Try hasami-age renkon, dango dumplings, and menchi katsu at Niku no Suzuki.',maps:'https://goo.gl/maps/UyVqWTcu2RWEt1WU7'},
-    {day:'Day 2',name:'Ameya Yokocho',icon:'🍡',note:'Candy store alley near Ueno. Try candied fruit skewers — strawberries glazed in melted sugar.',maps:'https://goo.gl/maps/5QTXzbPoT5UyjKCJ9'},
-    {day:'Day 3',name:'Tsukishima Monja Street',icon:'🥞',note:'70+ monjayaki restaurants. Tokyos own savory pancake dish — lighter and runnier than okonomiyaki.',maps:'https://goo.gl/maps/qgjUPUn9MvHow2f88'},
-    {day:'Day 7 (morning)',name:'Takeshita Street',icon:'🍦',note:'Harajuku. Famous crepes and wild street food. 3 min walk from Meiji-Jingumae Station — right after the shrine.',maps:'https://goo.gl/maps/u6CtBfMLshKGiMBw6'},
+    {day:'Mon Oct 12',name:'Yanaka Ginza Shopping Street',icon:'🐱',note:'Cat-themed street. Try hasami-age renkon, dango dumplings, and menchi katsu at Niku no Suzuki.',maps:'https://goo.gl/maps/UyVqWTcu2RWEt1WU7'},
+    {day:'Mon Oct 12',name:'Ameya Yokocho',icon:'🍡',note:'Candy store alley near Ueno. Try candied fruit skewers — strawberries glazed in melted sugar.',maps:'https://goo.gl/maps/5QTXzbPoT5UyjKCJ9'},
+    {day:'Tue Oct 13',name:'Tsukishima Monja Street',icon:'🥞',note:'70+ monjayaki restaurants. Tokyos own savory pancake dish — lighter and runnier than okonomiyaki.',maps:'https://goo.gl/maps/qgjUPUn9MvHow2f88'},
+    {day:'Thu Oct 15',name:'Takeshita Street',icon:'🍦',note:'Harajuku. Famous crepes and wild street food. 3 min walk from Meiji-Jingumae Station — right after the shrine.',maps:'https://goo.gl/maps/u6CtBfMLshKGiMBw6'},
     // SHIMOKITAZAWA
-    {day:'Day 5',name:'Shimokitazawa',icon:'🎸',note:'Evening — vintage shops, live music, ramen',maps:'https://maps.google.com/?q=Shimokitazawa+Tokyo'},
-    {day:'Day 5',name:'Ichiban-gai',icon:'🛍️',note:'Main vintage shopping street',maps:'https://maps.google.com/?q=Shimokitazawa+Ichiban-gai+Tokyo'},
-    {day:'Day 2',name:'Senso-ji Temple',icon:'🏮',note:'Arrive before 9am',maps:'https://maps.google.com/?q=Senso-ji+Temple+Tokyo'},
-    {day:'Day 3',name:'Tsukiji Outer Market',icon:'🐟',note:'Arrive before 8am',maps:'https://maps.google.com/?q=Tsukiji+Outer+Market+Tokyo'},
-    {day:'Day 4',name:'TeamLab Borderless',icon:'🎨',note:'Book tickets in advance',maps:'https://maps.google.com/?q=TeamLab+Borderless+Tokyo'},
-    {day:'Day 5',name:'Tokyo DisneySea',icon:'🏰',note:'Fantasy Springs first',maps:'https://maps.google.com/?q=Tokyo+DisneySea'},
-    {day:'Day 6',name:'Shibuya Crossing',icon:'🚦',note:'Best at dusk',maps:'https://maps.google.com/?q=Shibuya+Crossing+Tokyo'},
-    {day:'Day 7',name:'Fushimi Inari',icon:'⛩️',note:'Arrive by 7am',maps:'https://maps.google.com/?q=Fushimi+Inari+Taisha+Kyoto'},
-    {day:'Day 7',name:'Kinkaku-ji',icon:'🏯',note:'Golden Pavilion — 500 yen',maps:'https://maps.google.com/?q=Kinkakuji+Kyoto'},
-    {day:'Day 7',name:'Gion District',icon:'🏮',note:'Hanamikoji St at 5-6pm',maps:'https://maps.google.com/?q=Gion+Kyoto'},
-    {day:'Day 8',name:'Meiji Shrine',icon:'⛩️',note:'8am for total peace',maps:'https://maps.google.com/?q=Meiji+Shrine+Tokyo'},
-    {day:'Day 8',name:'Golden Gai',icon:'🍶',note:'Commit to one bar',maps:'https://maps.google.com/?q=Golden+Gai+Shinjuku+Tokyo'},
+    {day:'Thu Oct 15',name:'Shimokitazawa',icon:'🎸',note:'Evening — vintage shops, live music, ramen',maps:'https://maps.google.com/?q=Shimokitazawa+Tokyo'},
+    {day:'Thu Oct 15',name:'Ichiban-gai',icon:'🛍️',note:'Main vintage shopping street',maps:'https://maps.google.com/?q=Shimokitazawa+Ichiban-gai+Tokyo'},
+    {day:'Mon Oct 12',name:'Hareruya Akihabara',icon:'🃏',note:'MTG singles — bring a want list',maps:'https://maps.google.com/?q=Hareruya+Akihabara+Tokyo'},
+    {day:'Tue Oct 13',name:'Tsukiji Outer Market',icon:'🐟',note:'Arrive by 8am — stalls wind down by 11',maps:'https://maps.google.com/?q=Tsukiji+Outer+Market+Tokyo'},
+    {day:'Tue Oct 13',name:'Onitsuka Tiger Shinjuku',icon:'👟',note:'World flagship, East Exit — passport for tax-free',maps:'https://maps.google.com/?q=Onitsuka+Tiger+Shinjuku+Tokyo'},
+    {day:'Tue Oct 13',name:'teamLab Borderless',icon:'🎨',note:'Azabudai Hills — 3:00pm timed entry',maps:'https://maps.google.com/?q=teamLab+Borderless+Azabudai+Hills+Tokyo'},
+    {day:'Wed Oct 14',name:'Tokyo DisneySea',icon:'🏰',note:'Fantasy Springs first, Fantasmic last',maps:'https://maps.google.com/?q=Tokyo+DisneySea'},
+    {day:'Thu Oct 15',name:'Shibuya Crossing',icon:'🚦',note:'From above — Mags Park or the Starbucks',maps:'https://maps.google.com/?q=Shibuya+Crossing+Tokyo'},
+    {day:'Thu Oct 15',name:'Golden Gai',icon:'🏮',note:'Walk-through only — Jack is under 20',maps:'https://maps.google.com/?q=Golden+Gai+Shinjuku+Tokyo'},
+    {day:'Fri Oct 16',name:'Fushimi Inari',icon:'⛩️',note:'~9:45 arrival — hike past the lower gates to Yotsutsuji',maps:'https://maps.google.com/?q=Fushimi+Inari+Taisha+Kyoto'},
+    {day:'Fri Oct 16',name:'Gion District',icon:'🏮',note:'Keihan from Fushimi-Inari — Hanamikoji, Shirakawa',maps:'https://maps.google.com/?q=Gion+Kyoto'},
+    {day:'Any rest day',name:'Nakano Broadway',icon:'🏬',note:'Unscheduled — 5 min from Shinjuku on the Chuo',maps:'https://maps.google.com/?q=Nakano+Broadway+Tokyo'},
   ].concat(PLACES_CUSTOM);
 
   highlights.forEach(function(p){
@@ -1664,10 +1665,15 @@ function renderYen(){
 }
 
 // DARK MODE
-var APP_VERSION = '2.5';
+var APP_VERSION = '2.6';
+var APP_UPDATED = 'Oct 3, 2026';
 var savedVersion = LS.get('tk_version', '0');
 if(savedVersion !== APP_VERSION){ try{ localStorage.removeItem('tk_days'); }catch(e){} }
 LS.set('tk_version', APP_VERSION);
+(function(){
+  var el=document.getElementById('hero-version');
+  if(el) el.textContent='v'+APP_VERSION+' \u00b7 updated '+APP_UPDATED;
+})();
 
 var isDark = LS.get('tk_dark', false);
 function applyDark(){
@@ -1753,19 +1759,18 @@ function initPacking() {
 var HOTEL = {lat: 35.6953, lng: 139.7020, name: 'Hotel Gracery Shinjuku'};
 
 var DEST = [
-  {name:'Senso-ji Temple',     lat:35.7148, lng:139.7967, icon:'⛩️',  day:'Day 1',    time:'40 min',        how:'Ginza Line from Shinjuku station → Asakusa'},
-  {name:'Tsukiji Market',      lat:35.6654, lng:139.7706, icon:'🐟',  day:'Day 2',    time:'30 min',        how:'Oedo Line → Tsukijishijo (direct)'},
-  {name:'Yanaka Ginza',        lat:35.7267, lng:139.7667, icon:'🏘️', day:'Day 2',    time:'45 min',        how:'JR Yamanote to Nippori, 10 min walk'},
-  {name:'Akihabara',           lat:35.7022, lng:139.7741, icon:'🎮',  day:'Day 3',    time:'20 min',        how:'JR Chuo Line from Shinjuku → Akihabara (3 stops)'},
-  {name:'TeamLab Borderless',  lat:35.6252, lng:139.7766, icon:'🎨',  day:'Day 3',    time:'35 min',        how:'JR to Osaki → Rinkai Line → Tokyo Teleport'},
-  {name:'Tokyo DisneySea',     lat:35.6267, lng:139.8850, icon:'🏰',  day:'Day 4',    time:'60 min',        how:'JR to Tokyo Station → Keiyo Line → Maihama'},
-  {name:'Odaiba / Gundam',     lat:35.6255, lng:139.7754, icon:'🤖',  day:'Day 5',    time:'40 min',        how:'JR to Osaki → Rinkai Line → Tokyo Teleport'},
-  {name:'Shibuya Crossing',    lat:35.6595, lng:139.7004, icon:'🚦',  day:'Day 5',    time:'5 min',         how:'JR Yamanote → Shibuya (1 stop south)'},
-  {name:'Shimokitazawa',       lat:35.6614, lng:139.6688, icon:'🎸',  day:'Day 5',    time:'8 min',         how:'Odakyu Line → Shimokitazawa (2 stops)'},
-  {name:'Shinagawa (Shinkansen)',lat:35.6285,lng:139.7388,icon:'🚅',  day:'Day 6',    time:'15 min',        how:'JR Yamanote south → Shinagawa, then Nozomi to Kyoto'},
-  {name:'Meiji Shrine',        lat:35.6764, lng:139.6993, icon:'🌿',  day:'Day 7',    time:'10 min',        how:'JR Yamanote → Harajuku (1 stop)'},
-  {name:'Golden Gai',          lat:35.6942, lng:139.7042, icon:'🍶',  day:'Day 7 eve',time:'10 min walk',   how:'Walk from hotel — Kabukicho is right next door'},
-  {name:'Haneda Airport',      lat:35.5494, lng:139.7798, icon:'✈️', day:'Departure', time:'40 min',        how:'Limousine bus from Shinjuku Bus Terminal (direct, no transfer)'},
+  {name:'Yanaka Ginza',        lat:35.7267, lng:139.7667, icon:'🏘️', day:'Mon Oct 12', time:'20 min',      how:'JR Yamanote outer loop to Nippori, west exit'},
+  {name:'Akihabara',           lat:35.7022, lng:139.7741, icon:'🎮',  day:'Mon Oct 12', time:'17 min',      how:'JR Chuo-Sobu local, the yellow train, direct'},
+  {name:'Onitsuka Tiger',      lat:35.6927, lng:139.7030, icon:'👟',  day:'Tue Oct 13', time:'5 min walk',  how:'Shinjuku Station East Exit, 3-26-11 Shinjuku'},
+  {name:'Tsukiji Market',      lat:35.6654, lng:139.7706, icon:'🐟',  day:'Tue Oct 13', time:'20 min',      how:'Toei Oedo line to Tsukijishijo, direct'},
+  {name:'teamLab Borderless',  lat:35.6603, lng:139.7406, icon:'🎨',  day:'Tue Oct 13', time:'25 min',      how:'Azabudai Hills — Hibiya line to Kamiyacho'},
+  {name:'Tokyo DisneySea',     lat:35.6267, lng:139.8850, icon:'🏰',  day:'Wed Oct 14', time:'75 min',      how:'Chuo rapid to Tokyo, Keiyo to Maihama, monorail'},
+  {name:'Shibuya Crossing',    lat:35.6595, lng:139.7004, icon:'🚦',  day:'Thu Oct 15', time:'7 min',       how:'JR Yamanote, 2 stops'},
+  {name:'Shimokitazawa',       lat:35.6614, lng:139.6688, icon:'🎸',  day:'Thu Oct 15', time:'10 min',      how:'Odakyu Odawara express — not the Keio'},
+  {name:'Golden Gai',          lat:35.6942, lng:139.7042, icon:'🏮',  day:'Thu Oct 15', time:'10 min walk', how:'Walk from the hotel — walk-through only'},
+  {name:'Tokyo Station',       lat:35.6812, lng:139.7671, icon:'🚅',  day:'Fri Oct 16', time:'14 min',      how:'JR Chuo rapid — Nozomi to Kyoto from here'},
+  {name:'Nakano Broadway',     lat:35.7076, lng:139.6657, icon:'🏬',  day:'Unscheduled', time:'5 min',      how:'JR Chuo rapid, one stop'},
+  {name:'Haneda Airport',      lat:35.5494, lng:139.7798, icon:'✈️', day:'Sat Oct 17', time:'55 min',      how:'Airport Limousine bus from Hyatt Regency'}
 ];
 
 var stayNotesList = LS.get('tk_stay_notes', []);
